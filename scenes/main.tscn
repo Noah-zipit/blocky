@@ -1,0 +1,132 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scripts/touch_ui.gd" id="1_touch"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="3_enemy"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="4_hud"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_1"]
+sky_top_color = Color(0.35, 0.6, 0.95, 1)
+sky_horizon_color = Color(0.75, 0.87, 1, 1)
+ground_bottom_color = Color(0.4, 0.5, 0.6, 1)
+ground_horizon_color = Color(0.75, 0.87, 1, 1)
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("SkyMat_1")
+
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 3
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="Mat_green"]
+albedo_color = Color(0.35, 0.75, 0.35, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_red"]
+albedo_color = Color(0.9, 0.25, 0.25, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_blue"]
+albedo_color = Color(0.25, 0.45, 0.95, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_yellow"]
+albedo_color = Color(0.95, 0.8, 0.2, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_orange"]
+albedo_color = Color(0.95, 0.55, 0.2, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_purple"]
+albedo_color = Color(0.6, 0.35, 0.9, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_cyan"]
+albedo_color = Color(0.3, 0.85, 0.9, 1)
+roughness = 0.9
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819152, -0.425203, 0.385118, 0, 0.67101, 0.741476, -0.573576, -0.607991, 0.549508, 0, 18, 6)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+size = Vector3(60, 1, 60)
+material = SubResource("Mat_green")
+
+[node name="PadRed" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, 0)
+size = Vector3(4, 1, 4)
+material = SubResource("Mat_red")
+
+[node name="PadBlue" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.5, -2)
+size = Vector3(4, 1, 4)
+material = SubResource("Mat_blue")
+
+[node name="PadYellow" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2.5, 2)
+size = Vector3(4, 1, 4)
+material = SubResource("Mat_yellow")
+
+[node name="PadOrange" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -12)
+size = Vector3(6, 1, 6)
+material = SubResource("Mat_orange")
+
+[node name="PadPurple" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.5, -8)
+size = Vector3(3, 1, 3)
+material = SubResource("Mat_purple")
+
+[node name="PadCyan" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2.5, -4)
+size = Vector3(3, 1, 3)
+material = SubResource("Mat_cyan")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 10)
+
+[node name="Enemy1" parent="." instance=ExtResource("3_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 8)
+
+[node name="Enemy2" parent="." instance=ExtResource("3_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 6)
+
+[node name="Enemy3" parent="." instance=ExtResource("3_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -10)
+
+[node name="Enemy4" parent="." instance=ExtResource("3_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -14)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="HudBar" type="Control" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("4_hud")
+player_path = NodePath("../../Player")
+
+[node name="TouchUI" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="TouchControls" type="Control" parent="TouchUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("1_touch")
+player_path = NodePath("../../Player")
